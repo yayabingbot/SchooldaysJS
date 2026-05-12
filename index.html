@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>School Countdown</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f0;
+      color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      padding: 3rem 1rem;
+      margin: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .label {
+      font-size: 13px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background: #ebebeb;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 13px;
+      color: #666;
+      margin: 0 0 6px 0;
+    }
+
+    .card-title i {
+      font-size: 14px;
+      margin-right: 4px;
+      vertical-align: -1px;
+    }
+
+    .card-number {
+      font-size: 32px;
+      font-weight: 500;
+      margin: 0;
+      color: #1a1a1a;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: #aaa;
+      margin: 4px 0 0 0;
+    }
+
+    .progress-box {
+      background: #ebebeb;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .progress-label {
+      font-size: 13px;
+      color: #666;
+      margin: 0 0 8px 0;
+    }
+
+    .progress-track {
+      background: #fff;
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+      border: 0.5px solid rgba(0,0,0,0.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: #1D9E75;
+      width: 0%;
+      transition: width 0.6s ease;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .progress-meta span {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; color: #f0f0f0; }
+      .card, .progress-box { background: #2a2a2a; }
+      .card-number { color: #f0f0f0; }
+      .progress-track { background: #111; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p class="label">Countdown tracker</p>
+
+    <div class="cards">
+      <div class="card">
+        <p class="card-title"><i class="ti ti-calendar"></i>Days until school's out</p>
+        <p class="card-number" id="totalDays">—</p>
+        <p class="card-sub">May 29, 2026</p>
+      </div>
+      <div class="card">
+        <p class="card-title"><i class="ti ti-school"></i>School days left</p>
+        <p class="card-number" id="schoolDays">—</p>
+        <p class="card-sub">Excluding weekends</p>
+      </div>
+      <div class="card">
+        <p class="card-title"><i class="ti ti-sun"></i>Days until next year</p>
+        <p class="card-number" id="nextYearDays">—</p>
+        <p class="card-sub">Aug 20, 2026</p>
+      </div>
+    </div>
+
+    <div class="progress-box">
+      <p class="progress-label">Progress to summer</p>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-meta">
+        <span>Today</span>
+        <span id="progressLabel">—</span>
+        <span>May 29</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const now = new Date();
+    const theTime = new Date(2026, 4, 29);    // May 29, 2026
+    const nextYear = new Date(2026, 7, 20);   // Aug 20, 2026
+    const schoolStart = new Date(2025, 7, 20); // Aug 20, 2025
+
+    const msPerDay = 1000 * 60 * 60 * 24;
+
+    const days = Math.floor((theTime - now) / msPerDay) + 2;
+    const daysUntilNextYear = Math.floor((nextYear - now) / msPerDay) + 2;
+    const weekendDays = Math.floor(days / 7) * 2;
+    const schoolDays = Math.round(days - weekendDays);
+
+    const totalSchoolSpan = Math.floor((theTime - schoolStart) / msPerDay);
+    const elapsed = totalSchoolSpan - days;
+    const progress = Math.min(100, Math.max(0, Math.round((elapsed / totalSchoolSpan) * 100)));
+
+    document.getElementById('totalDays').textContent = Math.max(0, days);
+    document.getElementById('schoolDays').textContent = Math.max(0, schoolDays);
+    document.getElementById('nextYearDays').textContent = Math.max(0, daysUntilNextYear);
+    document.getElementById('progressLabel').textContent = progress + '% done';
+
+    setTimeout(() => {
+      document.getElementById('progressBar').style.width = progress + '%';
+    }, 100);
+  </script>
+</body>
+</html>
