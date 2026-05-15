@@ -160,7 +160,7 @@
     const days = Math.floor((theTime - now) / msPerDay) + 2;
     const daysUntilNextYear = Math.floor((nextYear - now) / msPerDay) + 2;
     const weekendDays = Math.floor(days / 7) * 2;
-    const schoolDays = Math.round(days - weekendDays);
+    const schoolDays = Math.round(days - weekendDays-1);
 
     const totalSchoolSpan = Math.floor((theTime - schoolStart) / msPerDay);
     const elapsed = totalSchoolSpan - days;
